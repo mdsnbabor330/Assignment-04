@@ -97,6 +97,41 @@ maincontainer.addEventListener("click", (e) => {
     if (currentStatus == "Rejected-btn") {
       renderRejected();
     }
+  }else if (e.target.classList.contains("btn-error")) {
+    const parentNodes = e.target.parentNode.parentNode;
+    const companyName = parentNodes.querySelector(".companyName").innerText;
+    const jobName = parentNodes.querySelector(".jobName").innerText;
+    const jobinfo = parentNodes.querySelector(".jobinfo").innerText;
+    const discription = parentNodes.querySelector(".discription").innerText;
+    const changeStatus = parentNodes.querySelector(".Status");
+    changeStatus.innerHTML = "Rejected";
+    changeStatus.classList.remove("btn-accent");
+    changeStatus.classList.add("btn-error");
+
+    const cardInfo = {
+      companyName,
+      jobName,
+      jobinfo,
+      changeStatus: "Rejected",
+      discription,
+    };
+
+    let jobExist = rejectedApplications.find(
+      (item) => item.companyName == cardInfo.companyName
+    );
+    if (!jobExist) {
+      rejectedApplications.push(cardInfo);
+    }
+
+    interviewApplications = interviewApplications.filter(
+      (item) => item.companyName != cardInfo.companyName
+    );
+
+    counter();
+
+    if (currentStatus == "Interview-btn") {
+      renderInterview();
+    }
   }
 });
 function renderInterview() {
@@ -125,4 +160,31 @@ function renderInterview() {
       </div>`;
     filterApplications.appendChild(div);
   });
+}
+function renderRejected() {
+  filterApplications.innerHTML = "";
+  for (let rejected of rejectedApplications) {
+    let div = document.createElement("div");
+    div.className = "card bg-base-100 w-full shadow-sm";
+    div.innerHTML = `
+      <div class="card-body space-y-2 relative">
+        <h3 class="companyName text-[#002C5C] font-extrabold text-[20px]">
+          ${rejected.companyName}
+        </h3>
+        <p class="jobName">${rejected.jobName}</p>
+        <button class="btn btn-circle btn-sm absolute right-6">
+          <img src="./assets/Trash.png" alt="" />
+        </button>
+        <p class="jobinfo text-[13px]">${rejected.jobinfo}</p>
+        <div>
+          <button class="btn btn-error Status">${rejected.changeStatus}</button>
+        </div>
+        <p class="discription">${rejected.discription}</p>
+        <div class="space-x-2">
+          <button class="btn btn-outline btn-accent">INTERVIEW</button>
+          <button class="btn btn-outline btn-error">REJECTED</button>
+        </div>
+      </div>`;
+    filterApplications.appendChild(div);
+  }
 }
