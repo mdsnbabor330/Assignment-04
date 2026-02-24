@@ -64,3 +64,38 @@ function toggleStyle(id) {
     renderRejected();
   }
 }
+maincontainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-accent")) {
+    const parentNodes = e.target.parentNode.parentNode;
+    const companyName = parentNodes.querySelector(".companyName").innerText;
+    const jobName = parentNodes.querySelector(".jobName").innerText;
+    const jobinfo = parentNodes.querySelector(".jobinfo").innerText;
+    const discription = parentNodes.querySelector(".discription").innerText;
+    const changeStatus = parentNodes.querySelector(".Status");
+    changeStatus.innerHTML = "Interview";
+    changeStatus.classList.add("btn-accent");
+    changeStatus.classList.remove("btn-error");
+    const cardInfo = {
+      companyName,
+      jobName,
+      jobinfo,
+      changeStatus: "Interview",
+      discription,
+    };
+
+    let jobExist = interviewApplications.find(
+      (item) => item.companyName == cardInfo.companyName
+    );
+    if (!jobExist) {
+      interviewApplications.push(cardInfo);
+    }
+    rejectedApplications = rejectedApplications.filter(
+      (item) => item.companyName != cardInfo.companyName
+    );
+    counter();
+
+    if (currentStatus == "Rejected-btn") {
+      renderRejected();
+    }
+  }
+});
