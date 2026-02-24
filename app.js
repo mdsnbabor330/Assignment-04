@@ -99,3 +99,30 @@ maincontainer.addEventListener("click", (e) => {
     }
   }
 });
+function renderInterview() {
+  filterApplications.innerHTML = "";
+  interviewApplications.forEach((interview) => {
+    let div = document.createElement("div");
+    div.className = "card bg-base-100 w-full shadow-sm";
+    div.innerHTML = `
+      <div class="card-body space-y-2 relative">
+        <h3 class="companyName text-[#002C5C] font-extrabold text-[20px]">
+          ${interview.companyName}
+        </h3>
+        <p class="jobName">${interview.jobName}</p>
+        <button class="btn btn-circle btn-sm absolute right-6">
+          <img src="./assets/Trash.png" alt="" />
+        </button>
+        <p class="jobinfo text-[13px]">${interview.jobinfo}</p>
+        <div>
+          <button class="btn btn-accent Status">${interview.changeStatus}</button>
+        </div>
+        <p class="discription">${interview.discription}</p>
+        <div class="space-x-2">
+          <button class="btn btn-outline btn-accent">INTERVIEW</button>
+          <button class="btn btn-outline btn-error">REJECTED</button>
+        </div>
+      </div>`;
+    filterApplications.appendChild(div);
+  });
+}
