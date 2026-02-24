@@ -132,6 +132,40 @@ maincontainer.addEventListener("click", (e) => {
     if (currentStatus == "Interview-btn") {
       renderInterview();
     }
+  }else if (e.target.closest(".btn-circle")) {
+    const card = e.target.closest(".card");
+    const companyName = card.querySelector(".companyName").innerText;
+
+    interviewApplications = interviewApplications.filter(
+      (item) => item.companyName !== companyName
+    );
+    rejectedApplications = rejectedApplications.filter(
+      (item) => item.companyName !== companyName
+    );
+
+    const allCards = totalApplication.querySelectorAll(".card");
+    allCards.forEach((item) => {
+      if (item.querySelector(".companyName").innerText === companyName) {
+        item.remove();
+      }
+    });
+
+    card.remove();
+    counter();
+
+    if (currentStatus === "Interview-btn") {
+      if (interviewApplications.length === 0) {
+        noAvailableJobs.classList.remove("hidden");
+      }
+    } else if (currentStatus === "Rejected-btn") {
+      if (rejectedApplications.length === 0) {
+        noAvailableJobs.classList.remove("hidden");
+      }
+    } else {
+      if (totalApplication.children.length === 0) {
+        noAvailableJobs.classList.remove("hidden");
+      }
+    }
   }
 });
 function renderInterview() {
